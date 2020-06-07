@@ -11,7 +11,7 @@
 public stock const PluginName[] = "GameName Wins";
 public stock const PluginVersion[] = "1.0.4";
 public stock const PluginAuthor[] = "twisterniq";
-public stock const PluginURL[] = "https://github.com/twisterniq/GameName-Wins";
+public stock const PluginURL[] = "https://github.com/twisterniq/amxx-gamename-wins";
 public stock const PluginDescription[] = "Replaces gamename field with the number of CT and T round wins";
 
 new const CONFIG_NAME[] = "gamename_wins";

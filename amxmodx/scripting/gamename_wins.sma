@@ -1,6 +1,4 @@
 /*
- * Author: https://t.me/twisterniq (https://dev-cs.ru/members/444/)
- *
  * Official resource topic: https://dev-cs.ru/resources/593/
  */
 
@@ -11,7 +9,7 @@
 #pragma semicolon 1
 
 public stock const PluginName[] = "GameName Wins";
-public stock const PluginVersion[] = "1.0.3";
+public stock const PluginVersion[] = "1.0.4";
 public stock const PluginAuthor[] = "twisterniq";
 public stock const PluginURL[] = "https://github.com/twisterniq/GameName-Wins";
 public stock const PluginDescription[] = "Replaces gamename field with the number of CT and T round wins";
@@ -70,13 +68,10 @@ public plugin_init()
 	new iNumT = get_playersnum_ex(iFlags, "TERRORIST");
 	new iNumCT = get_playersnum_ex(iFlags, "CT");
 
-	new szText[64];
-	formatex(szText, charsmax(szText), "%d CT « %d:%d » T %d", iNumCT, get_member_game(m_iNumCTWins), get_member_game(m_iNumTerroristWins), iNumT);
-
-	set_member_game(m_GameDesc, szText);
+	set_member_game(m_GameDesc, fmt("%d CT « %d:%d » T %d", iNumCT, get_member_game(m_iNumCTWins), get_member_game(m_iNumTerroristWins), iNumT));
 }
 
-@OnUpdateIntervalChange(const handle, const szOldValue[], const szNewValue[])
+@OnUpdateIntervalChange(const iHandle, const szOldValue[], const szNewValue[])
 {
 	@func_SetGameDesc();
 	change_task(TASK_INTERVAL, str_to_float(szNewValue));

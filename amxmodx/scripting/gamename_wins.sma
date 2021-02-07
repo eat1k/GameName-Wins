@@ -37,7 +37,7 @@ public plugin_init()
 		.name = "gamename_wins_mode",
 		.string = "0",
 		.flags = FCVAR_NONE,
-		.description = "0 - to count all players\n1 - to count only alive players",
+		.description = "0 - to count all players^n1 - to count only alive players",
 		.has_min = true,
 		.min_val = 0.0,
 		.has_max = true,

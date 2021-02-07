@@ -8,6 +8,8 @@
 
 #pragma semicolon 1
 
+#define IntToStr(%1) fmt("%d",%1)
+
 public stock const PluginName[] = "GameName Wins";
 public stock const PluginVersion[] = "1.0.4";
 public stock const PluginAuthor[] = "twisterniq";
@@ -18,6 +20,7 @@ new const CONFIG_NAME[] = "gamename_wins";
 
 const TASK_INTERVAL = 100;
 new g_iCvarMode;
+new g_szTpl[64];
 
 public plugin_init()
 {
@@ -40,6 +43,13 @@ public plugin_init()
 		.has_max = true,
 		.max_val = 1.0),
 		g_iCvarMode);
+
+	bind_pcvar_string(create_cvar(
+		.name = "gamename_wins_tpl",
+		.string = "%ctNum% CT « %ctWins%:%tWins% » T %tNum%",
+		.flags = FCVAR_NONE,
+		.description = "Template of game name.^n^nPlaceholders:^n%ctNum% - Number of CT^n%tNum% - Number of T^n%ctWins% - CT wins number^n%tWins% - T wins number^n%rounds% - Rounds num"),
+		g_szTpl, charsmax(g_szTpl));
 
 	hook_cvar_change(create_cvar(
 		.name = "gamename_wins_update_interval",
@@ -68,7 +78,15 @@ public plugin_init()
 	new iNumT = get_playersnum_ex(iFlags, "TERRORIST");
 	new iNumCT = get_playersnum_ex(iFlags, "CT");
 
-	set_member_game(m_GameDesc, fmt("%d CT « %d:%d » T %d", iNumCT, get_member_game(m_iNumCTWins), get_member_game(m_iNumTerroristWins), iNumT));
+	new szGameName[64];
+	copy(szGameName, charsmax(szGameName), g_szTpl);
+	replace(szGameName, charsmax(szGameName), "%ctNum%", IntToStr(iNumCT));
+	replace(szGameName, charsmax(szGameName), "%tNum%", IntToStr(iNumT));
+	replace(szGameName, charsmax(szGameName), "%ctWins%", IntToStr(get_member_game(m_iNumCTWins)));
+	replace(szGameName, charsmax(szGameName), "%tWins%", IntToStr(get_member_game(m_iNumTerroristWins)));
+	replace(szGameName, charsmax(szGameName), "%rounds%", IntToStr(get_member_game(m_iTotalRoundsPlayed)));
+
+	set_member_game(m_GameDesc, szGameName);
 }
 
 @OnUpdateIntervalChange(const iHandle, const szOldValue[], const szNewValue[])
